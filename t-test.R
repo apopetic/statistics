@@ -17,6 +17,6 @@ else {
 }
 }
 
-t_test(1, 0.714, 0.0714, 0.0341, 4, 4, tl = 1) #input the value and just run it!!
+t_test()
 
 

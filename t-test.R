@@ -4,9 +4,10 @@
 #p = level of significance, which can be changed while running the function ******
 #tl = two tailed or one tailed; default set to 2-tailed and can be changed to 1. ******
 #This script was made by Ankur Jamwal on 31 July 2019***************
+#Script update on 01 August 2019**************
 
 t_test <- function(m1, m2, sd1, sd2, n1, n2, p = 0.05, tl = 2){
-  t <- (m2-m1)/sqrt((sd2^2/n2)+(sd1^2/n1))
+  t <- (m1-m2)/sqrt((sd1^2/n1)+(sd2^2/n2))
   df <- ((n1+n2-2))
   pt <- tl*pt(t,df)
   if(pt < p){

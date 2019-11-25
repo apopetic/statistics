@@ -1,0 +1,29 @@
+library(lpSolve)#call the linear programming package
+
+objective.in <- c(3100, 1550, 2600, 5330, 4500, 150) #approx prices in Indian rupees of casein, gelatin, starch, dextrin, cod liver oil, cellulose
+
+#create constraint matrix containing all the parameters, such as weight, protein, CHO, and lipid values
+#the row should contain the incormation, column is for ingredients
+const.mat <- matrix(c(1000, 1000, 1000, 1000, 1000, 1000, #weight of each ingredient
+                      75, 85, 0, 0, 0, 0, #protein concentration of casein and gelatin
+                      0, 0, 99, 99, 0, 0, #carbohdrate content of starch and dextrin
+                      0, 0, 0, 0, 99, 0 #lipid content of cod liver oil
+                      ), nrow = 4, ncol = 6, byrow= T)
+rownames(const.mat) <- c("weight", "protein %", "carbohydrate %", "lipid %")
+colnames(const.mat) <- c("casein", "gelatin", "starch", "dextrin", "cod liver oil", "celluose")
+const.mat
+#define constraints
+weight_constraint <-  5000 #weight of final product in grams
+protein_constraint <-  45 #minimum protein required (range is 40%-50%)
+cho_constraint <-  40 #minimum carbohydrate required (range is 35%-45%)
+lipid_constraint <-  15 #minimum lipid required (range is 10%-15%)
+
+#define right hand side of the equation
+const.rhs <-  c(weight_constraint, protein_constraint, cho_constraint, lipid_constraint)
+
+#constraint direction
+const.dir <-  c("=", ">=", ">=", ">=")
+
+#create basic argument
+prod.sol <- lp(direction="min", objective.in, const.mat, const.dir, const.rhs) #direction is "min" because we want the final cost to be the least
+prod.sol$solution
